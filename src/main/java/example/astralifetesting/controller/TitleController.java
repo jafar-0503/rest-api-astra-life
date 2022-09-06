@@ -9,32 +9,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/titles")
+@RequestMapping("api/v1/")
 public class TitleController {
 
     @Autowired
     private TitleService titleService;
 
-    @GetMapping()
+    @GetMapping("titles")
     public ResponseEntity<BaseResponse<Title>> Title(){
         return titleService.getAllTitle();
     }
-    @GetMapping("/{id}")
+    @GetMapping("titles/{id}")
     public ResponseEntity<BaseResponse<Title>> getTitleById(@PathVariable Long id){
         return titleService.titleById(id);
     }
 
-    @PostMapping()
+    @PostMapping("titles")
     public ResponseEntity<BaseResponse<Title>> addTitle(@RequestBody Title Title){
         return titleService.addTitle(Title);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("titles/{id}")
     public ResponseEntity<BaseResponse<Title>> editTitle(@RequestBody Title editTitle, @PathVariable Long id){
         return titleService.editTitle(editTitle, id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("titles/{id}")
     public ResponseEntity<BaseResponse<Title>> deleteTitle(@PathVariable Long id){
         return titleService.deleteTitle(id);
     }

@@ -26,12 +26,12 @@ public class SalaryService {
 
     //Get-All-Salaries
     public ResponseEntity<BaseResponse<Salaries>> getAllSalaries(){
-        List<Salaries> salariess = salaryRepository.findAll();
-        if (salariess.isEmpty()){
+        List<Salaries> salaries = salaryRepository.findAll();
+        if (salaries.isEmpty()){
             return ResponseEntity.ok(new BaseResponse<>(false, null, "No Data"));
         }
         Type targetType = new TypeToken<List<Salaries>>(){}.getType();
-        List<Salaries> data= modelMapper.map(salariess, targetType);
+        List<Salaries> data= modelMapper.map(salaries, targetType);
         BaseResponse response = new BaseResponse(true, data, "Salaries retrieved successfully");
 
         return ResponseEntity.ok(response);
@@ -44,7 +44,7 @@ public class SalaryService {
         EntityModel<Salaries> resource = EntityModel.of(salaries);
         resource.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllSalaries())
                 .withRel("getAllSalaries"));
-        BaseResponse response = new BaseResponse(true, data, "Salaries retrieved successfully");
+        BaseResponse response = new BaseResponse(true, resource, "Salaries retrieved successfully");
 
         return ResponseEntity.ok(response);
     }

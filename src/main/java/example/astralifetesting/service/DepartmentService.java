@@ -45,7 +45,7 @@ public class DepartmentService {
         EntityModel<Department> resource = EntityModel.of(department);
         resource.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllDept())
                 .withRel("getAllDept"));
-        BaseResponse response = new BaseResponse(true, data, "Department retrieved successfully");
+        BaseResponse response = new BaseResponse(true, resource, "Department retrieved successfully");
 
         return ResponseEntity.ok(response);
     }

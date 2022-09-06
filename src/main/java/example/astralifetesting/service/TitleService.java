@@ -45,7 +45,7 @@ public class TitleService {
         EntityModel<Title> resource = EntityModel.of(title);
         resource.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllTitle())
                 .withRel("getAllTitle"));
-        BaseResponse response = new BaseResponse(true, data, "Title retrieved successfully");
+        BaseResponse response = new BaseResponse(true, resource, "Title retrieved successfully");
 
         return ResponseEntity.ok(response);
     }
