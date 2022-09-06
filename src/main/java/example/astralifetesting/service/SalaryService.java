@@ -2,11 +2,14 @@ package example.astralifetesting.service;
 
 import example.astralifetesting.config.error.ResourceNotFoundException;
 import example.astralifetesting.config.response.BaseResponse;
+import example.astralifetesting.model.Department;
 import example.astralifetesting.model.Salaries;
 import example.astralifetesting.repository.SalaryRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +41,9 @@ public class SalaryService {
     public ResponseEntity<BaseResponse<Salaries>> salariesById(Long id) throws ResourceNotFoundException {
         Salaries salaries = salaryRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Salaries ID " + id + " is not exist"));
         Salaries data = modelMapper.map(salaries, Salaries.class);
+        EntityModel<Salaries> resource = EntityModel.of(salaries);
+        resource.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllSalaries())
+                .withRel("getAllSalaries"));
         BaseResponse response = new BaseResponse(true, data, "Salaries retrieved successfully");
 
         return ResponseEntity.ok(response);

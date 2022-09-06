@@ -2,6 +2,7 @@ package example.astralifetesting.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import example.astralifetesting.auditable.Auditable;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

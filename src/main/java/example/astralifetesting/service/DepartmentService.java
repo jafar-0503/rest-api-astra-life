@@ -8,6 +8,8 @@ import example.astralifetesting.repository.DepartmentRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,9 @@ public class DepartmentService {
     public ResponseEntity<BaseResponse<Department>> departmentById(Long id){
         Department department = departmentRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Department ID " + id + " is not exist"));
         Department data = modelMapper.map(department, Department.class);
+        EntityModel<Department> resource = EntityModel.of(department);
+        resource.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllDept())
+                .withRel("getAllDept"));
         BaseResponse response = new BaseResponse(true, data, "Department retrieved successfully");
 
         return ResponseEntity.ok(response);

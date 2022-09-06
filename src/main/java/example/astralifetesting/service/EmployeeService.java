@@ -2,18 +2,21 @@ package example.astralifetesting.service;
 
 import example.astralifetesting.config.error.ResourceNotFoundException;
 import example.astralifetesting.config.response.BaseResponse;
+import example.astralifetesting.controller.EmployeeController;
 import example.astralifetesting.model.Employee;
 import example.astralifetesting.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class EmployeeService {
@@ -40,7 +43,10 @@ public class EmployeeService {
     public ResponseEntity<BaseResponse<Employee>> employeeById(Long id) throws ResourceNotFoundException {
         Employee employee = employeeRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee ID " + id + " is not exist"));
         Employee data = modelMapper.map(employee, Employee.class);
-        BaseResponse response = new BaseResponse(true, data, "Employee retrieved successfully");
+        EntityModel<Employee> resource = EntityModel.of(employee);
+        resource.add(WebMvcLinkBuilder.linkTo(methodOn(this.getClass()).getAllEmployee())
+                .withRel("getAllEmployee"));
+        BaseResponse response = new BaseResponse(true, resource, "Employee retrieved successfully");
 
         return ResponseEntity.ok(response);
     }

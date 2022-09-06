@@ -1,10 +1,13 @@
 package example.astralifetesting.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import example.astralifetesting.auditable.Auditable;
 import example.astralifetesting.property.Gender;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -28,6 +31,7 @@ public class Employee extends Auditable<String> {
     private Gender gender;
 
     @Column(name = "hire_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date hire_date;
 
     @ManyToMany(fetch = FetchType.LAZY,
@@ -39,21 +43,24 @@ public class Employee extends Auditable<String> {
             name = "dept_emp",
             joinColumns = { @JoinColumn(name = "emp_id")},
             inverseJoinColumns = { @JoinColumn(name = "dept_id")})
-    @JsonBackReference
+    @JsonIgnore
     private Set<Department> dept;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "employee")
-    @JsonBackReference
-    private Set<Salaries> salaries;
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.ALL,
+                    CascadeType.PERSIST},
+            mappedBy = "emp")
+    @JsonIgnore
+    private Set<Department> dept_manager;
 
-
-    public Employee(Date birth_date, String first_name, String last_name, Enum gender, Date hire_date, Set<Department> dept, Set<Salaries> salaries) {
+    public Employee(Date birth_date, String first_name, String last_name, Enum gender, Date hire_date, Set<Department> dept, Set<Salaries> salaries, Set<Department> dept_manager) {
         this.birth_date = birth_date;
         this.first_name = first_name;
         this.last_name = last_name;
         this.gender= (Gender) gender;
         this.hire_date=hire_date;
         this.dept = dept;
-        this.salaries=salaries;
+        this.dept_manager=dept_manager;
     }
 }

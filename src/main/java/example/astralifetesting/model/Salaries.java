@@ -1,7 +1,9 @@
 package example.astralifetesting.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import example.astralifetesting.auditable.Auditable;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,11 +17,6 @@ import java.util.Set;
 public class Salaries extends Auditable<String> {
     @Column(name = "salary", length = 11)
     private Integer salary;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "salary_id")
-    @JsonBackReference
-    private Employee employee;
 
     public Salaries(Integer salary){
         this.salary = salary;
