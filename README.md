@@ -3,7 +3,7 @@
 1. [REST-DOCUMENTATION](http://localhost:8081/swagger-ui/index.html).
 2. [COLLECTION-POSTMAN](https://github.com/jafar-0503/collection-postman.git)
 
-## Import the project into Eclipse IDE
+## run project into terminal
 
 
 ```
